@@ -3,7 +3,6 @@ import Card from "./Card";
 
 function Postal() {
   const [pincode, setPincode] = useState("");
-  const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [data, setData] = useState(null);
 
@@ -13,22 +12,18 @@ function Postal() {
       setError("Postal code should be 6 digits.");
       return;
     }
-    setLoading(true);
     fetch(`https://api.postalpincode.in/pincode/${pincode}`)
       .then((response) => response.json())
       .then((data) => {
         if (data[0].Status === "Error") {
           setError(data[0].Message);
-          setLoading(false);
         } else {
           setData(data[0]);
-          setLoading(false);
           setError(null);
         }
       })
       .catch((error) => {
         setError(error.message);
-        setLoading(false);
       });
   };
 
